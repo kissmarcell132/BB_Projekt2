@@ -5,8 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BB_Projekt2"
         mc:Ignorable="d"
-        Title="Kaplon versus kebabs from all around Gyor" Height="600" Width="500">
-    <Canvas x:Name="gameCanvas" Focusable="True" Background="Black" >
+        Title="Kaplon versus Kebabs" Height="600" Width="500">
+    <Canvas x:Name="gameCanvas" Focusable="True" Background="Black" KeyDown="gameCanvas_KeyDown" KeyUp="gameCanvas_KeyUp">
 
+        <Rectangle x:Name="kaplon_Player" Height="70" Width="50" Fill="AliceBlue" Canvas.Left="230" Canvas.Top="485" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+
+        <Label x:Name="scoreLbl" Content="Score: 0" FontSize="20" FontWeight="Bold" Foreground="White"/>
+        <Label x:Name="damageLbl" Content="Damage: 0" FontSize="20" FontWeight="Bold" Foreground="White" HorizontalAlignment="Left" Canvas.Left="350" VerticalAlignment="Center"/>
     </Canvas>
 </Window>
