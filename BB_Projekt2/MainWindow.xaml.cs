@@ -29,6 +29,9 @@ namespace BB_Projekt2
 
         int playerSpeed = 5;
 
+        private readonly Random random = new Random();
+        private readonly DispatcherTimer enemySpawnTimer = new DispatcherTimer();
+
         Rect kaplonHitbox;
 
         public MainWindow()
@@ -53,6 +56,13 @@ namespace BB_Projekt2
             ImageBrush kaplonImage = new ImageBrush();
             kaplonImage.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/kaplon.png"));
             kaplon_Player.Fill = kaplonImage;
+
+
+            InitializeComponent();
+
+            enemySpawnTimer.Interval = TimeSpan.FromSeconds(1.25); //Hány másodpercenként spawnoljanak az enemyk
+            enemySpawnTimer.Tick += SpawnEnemy;
+            enemySpawnTimer.Start();
         }
 
         private void LoopForGame(object? sender, EventArgs e)
@@ -131,9 +141,39 @@ namespace BB_Projekt2
             }
         }
 
-        private void SpawnEnemy()
+        private void SpawnEnemy(object sender, EventArgs e)
         {
+            Enemy enemy = new Enemy(); //Új ellenség létrehozása
 
+            Canvas.SetLeft(enemy.Shape, random.Next((int)gameCanvas.ActualWidth - 30)); //Ellenség random pozícióba helyezése a canvason
+            Canvas.SetTop(enemy.Shape, 0);
+
+            gameCanvas.Children.Add(enemy.Shape); //Ellenség hozzáadása a canvashoz
+           
+            MoveEnemy(enemy); //Ellenség mozgásának animálása
         }
+
+        private void MoveEnemy(Enemy enemy)
+        {
+            
+            var storyboard = new System.Windows.Media.Animation.Storyboard(); //Egy storyboard készítése az animáció készítéséhez
+
+            // Create a DoubleAnimation to move the enemy vertically
+            var animation = new System.Windows.Media.Animation.DoubleAnimation //Az ellenség vertikális mozgásához szükséges
+            {
+                From = Canvas.GetTop(enemy.Shape),
+                To = gameCanvas.ActualHeight,
+                Duration = TimeSpan.FromSeconds(10), // Egy időtartam megadása
+            };
+
+            // Az animációk beállítása és hozzáadása a storyboardhoz
+            System.Windows.Media.Animation.Storyboard.SetTarget(animation, enemy.Shape); 
+            System.Windows.Media.Animation.Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.TopProperty));
+            storyboard.Children.Add(animation);
+
+            // Animáció elindítása
+            storyboard.Begin();
+        }
+
     }
 }
