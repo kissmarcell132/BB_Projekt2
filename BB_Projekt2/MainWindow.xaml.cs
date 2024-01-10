@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -26,8 +27,14 @@ namespace BB_Projekt2
         bool moveRight;
         List<Rectangle> itemsForRemove = new List<Rectangle>();
 
+        int difficultyNumber = 0;
 
-        int playerSpeed = 5;
+        double enemySpawnTime = 0;
+        int playerSpeed = 0;
+        int fallingSpeed = 0;
+
+        bool difficultySelected = false;
+
 
         private readonly Random random = new Random();
         private readonly DispatcherTimer enemySpawnTimer = new DispatcherTimer();
@@ -38,7 +45,16 @@ namespace BB_Projekt2
         {
             InitializeComponent();
 
-            
+
+        }
+        
+        private void gameStart()
+        {
+            getDifficulty(difficultyNumber);
+            kaplon_Player.Visibility = Visibility.Visible;
+            damageLbl.Visibility = Visibility.Visible;
+            scoreLbl.Visibility = Visibility.Visible;
+
             timer.Interval = TimeSpan.FromMilliseconds(10); // 10 millisekundumonként frissít
             timer.Tick += LoopForGame; // hozzá adjuk a LoopForGame fügvényt így azt hívja meg folyamatosan
             timer.Start(); // el kell indítani a játékot
@@ -59,11 +75,10 @@ namespace BB_Projekt2
 
 
 
-            enemySpawnTimer.Interval = TimeSpan.FromSeconds(1.25); //Hány másodpercenként spawnoljanak az enemyk
+            enemySpawnTimer.Interval = TimeSpan.FromSeconds(enemySpawnTime); //Hány másodpercenként spawnoljanak az enemyk
             enemySpawnTimer.Tick += SpawnEnemy;
             enemySpawnTimer.Start();
         }
-
         private void LoopForGame(object? sender, EventArgs e)
         {
             kaplonHitbox = new Rect(Canvas.GetLeft(kaplon_Player), Canvas.GetTop(kaplon_Player), kaplon_Player.Width, kaplon_Player.Height);
@@ -80,10 +95,35 @@ namespace BB_Projekt2
                         itemsForRemove.Add(item);
                 }
             }
-
             Remover();
-            
+        }
 
+        private void getDifficulty(int difficulty)
+        {
+            switch (difficulty)
+            {
+                case 1:
+                    enemySpawnTime = 2.5;
+                    playerSpeed = 10;
+                    fallingSpeed = 15;
+                    break;
+                case 2:
+                    enemySpawnTime = 1.5;
+                    playerSpeed = 15;
+                    fallingSpeed = 10;
+                    break;
+                case 3:
+                    enemySpawnTime = 1;
+                    playerSpeed = 20;
+                    fallingSpeed = 8;
+                    break;
+                case 4:
+                    enemySpawnTime = 0.3;
+                    playerSpeed = 25;
+                    fallingSpeed = 4;
+                    break;
+
+            }
         }
 
         private void Remover()
@@ -101,7 +141,7 @@ namespace BB_Projekt2
                 Canvas.SetLeft(kaplon_Player, Canvas.GetLeft(kaplon_Player) - playerSpeed);
             }
 
-            if (moveRight && Canvas.GetLeft(kaplon_Player) + 69 < 500)
+            if (moveRight && Canvas.GetLeft(kaplon_Player) + 69  < 500)
             {
                 Canvas.SetLeft(kaplon_Player, Canvas.GetLeft(kaplon_Player) + playerSpeed);
             }
@@ -144,7 +184,7 @@ namespace BB_Projekt2
         {
             Enemy enemy = new Enemy(); //Új ellenség létrehozása
 
-            Canvas.SetLeft(enemy.Shape, random.Next((int)gameCanvas.ActualWidth - 30)); //Ellenség random pozícióba helyezése a canvason
+            Canvas.SetLeft(enemy.Shape, random.Next((int)gameCanvas.ActualWidth - 50)); //Ellenség random pozícióba helyezése a canvason
             Canvas.SetTop(enemy.Shape, 0);
 
             gameCanvas.Children.Add(enemy.Shape); //Ellenség hozzáadása a canvashoz
@@ -162,7 +202,7 @@ namespace BB_Projekt2
             {
                 From = Canvas.GetTop(enemy.Shape),
                 To = gameCanvas.ActualHeight,
-                Duration = TimeSpan.FromSeconds(10), // Egy időtartam megadása
+                Duration = TimeSpan.FromSeconds(fallingSpeed), // Egy időtartam megadása
             };
 
             // Az animációk beállítása és hozzáadása a storyboardhoz
@@ -174,5 +214,34 @@ namespace BB_Projekt2
             storyboard.Begin();
         }
 
+        private void easyBTN_Click(object sender, RoutedEventArgs e)
+        {
+            difficultyNumber = 1;
+            gameCanvas.Children.Remove(difficultyChooser);
+            gameStart();
+
+        }
+
+        private void mediumBTN_Click(object sender, RoutedEventArgs e)
+        {
+            difficultyNumber = 2;
+            gameCanvas.Children.Remove(difficultyChooser);
+            gameStart();
+        }
+
+        private void hardBTN_Click(object sender, RoutedEventArgs e)
+        {
+            difficultyNumber = 3;
+            gameCanvas.Children.Remove(difficultyChooser);
+            gameStart();
+
+        }
+
+        private void nitsBTN_Click(object sender, RoutedEventArgs e)
+        {
+            difficultyNumber = 4;
+            gameCanvas.Children.Remove(difficultyChooser);
+            gameStart();
+        }
     }
 }

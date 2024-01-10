@@ -6,11 +6,27 @@
         xmlns:local="clr-namespace:BB_Projekt2"
         mc:Ignorable="d"
         Title="Kaplon versus Kebabs" Height="600" Width="500">
+    
     <Canvas x:Name="gameCanvas" Focusable="True" Background="Black" KeyDown="gameCanvas_KeyDown" KeyUp="gameCanvas_KeyUp">
+        
+        <Grid x:Name="difficultyChooser" Width="300" Height="400" Margin="100" Background="Navy">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="0.75*"/>
+                <RowDefinition Height="0.75*"/>
+                <RowDefinition Height="0.75*"/>
+                <RowDefinition Height="0.75*"/>
+            </Grid.RowDefinitions>
+            <Label Content="Choose your difficulty" Grid.Row="0" FontSize="28" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Button x:Name="easyBTN" Content="Kaplon teli van" Width="250" Height="75" Grid.Row="1" Click="easyBTN_Click"/>
+            <Button x:Name="mediumBTN" Content="Kaplon kezd éhes lenni" Width="250" Height="75" Grid.Row="2" Click="mediumBTN_Click"/>
+            <Button x:Name="hardBTN" Content="Kaplon meg tudna enni egy antilopot" Width="250" Height="75" Grid.Row="3" Click="hardBTN_Click"/>
+            <Button x:Name="nitsBTN" Content="Nits Laci level typa shit" Width="250" Height="75" Grid.Row="4" Click="nitsBTN_Click"/>
+        </Grid>
+        
+        <Rectangle x:Name="kaplon_Player" Height="70" Width="50" Fill="AliceBlue" Canvas.Left="230" Canvas.Top="485" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden"/>
 
-        <Rectangle x:Name="kaplon_Player" Height="70" Width="50" Fill="AliceBlue" Canvas.Left="230" Canvas.Top="485" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-
-        <Label x:Name="scoreLbl" Content="Score: 0" FontSize="20" FontWeight="Bold" Foreground="White"/>
-        <Label x:Name="damageLbl" Content="Damage: 0" FontSize="20" FontWeight="Bold" Foreground="White" HorizontalAlignment="Left" Canvas.Left="350" VerticalAlignment="Center"/>
+        <Label x:Name="scoreLbl" Content="Score: 0" FontSize="20" FontWeight="Bold" Foreground="White" Visibility="Hidden"/>
+        <Label x:Name="damageLbl" Content="Damage: 0" FontSize="20" FontWeight="Bold" Foreground="White" HorizontalAlignment="Left" Canvas.Left="350" VerticalAlignment="Center" Visibility="Hidden"/>
     </Canvas>
 </Window>
