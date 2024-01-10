@@ -33,8 +33,8 @@ namespace BB_Projekt2
         int playerSpeed = 0;
         int fallingSpeed = 0;
 
-        bool difficultySelected = false;
-
+        int damage = 0;
+        int score = 0;
 
         private readonly Random random = new Random();
         private readonly DispatcherTimer enemySpawnTimer = new DispatcherTimer();
@@ -58,14 +58,14 @@ namespace BB_Projekt2
             timer.Start(); // el kell indítani a játékot
 
             gameCanvas.Focus();
-            ImageBrush bg = new ImageBrush();
+            //ImageBrush bg = new ImageBrush();
 
-            bg.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/background.jpg"));
-            bg.TileMode = TileMode.FlipXY; // kicsi a kép így többször kell berakni a TileMode pedig a módja hogy hogyan rakja a képet
-            bg.Viewport = new Rect(0, 0, 0.2, 0.2);
-            bg.ViewportUnits = BrushMappingMode.RelativeToBoundingBox;
+            //bg.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/background.jpg"));
+            //bg.TileMode = TileMode.FlipXY; // kicsi a kép így többször kell berakni a TileMode pedig a módja hogy hogyan rakja a képet
+            //bg.Viewport = new Rect(0, 0, 0.2, 0.2);
+            //bg.ViewportUnits = BrushMappingMode.RelativeToBoundingBox;
 
-            gameCanvas.Background = bg;
+            //gameCanvas.Background = bg;
 
             ImageBrush kaplonImage = new ImageBrush();
             kaplonImage.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/kaplon.png"));
@@ -79,6 +79,8 @@ namespace BB_Projekt2
         }
         private void LoopForGame(object? sender, EventArgs e)
         {
+            scoreLbl.Content = $"Score: {score}";
+            damageLbl.Content = $"Damage: {damage}";
             kaplonHitbox = new Rect(Canvas.GetLeft(kaplon_Player), Canvas.GetTop(kaplon_Player), kaplon_Player.Width, kaplon_Player.Height);
             MovePlayer();
 
@@ -94,8 +96,11 @@ namespace BB_Projekt2
                 }
                 if(item is Rectangle && Canvas.GetTop(item) > 500)
                 {
+                    damage += 10;
                     itemsForRemove.Add(item);
                 }
+
+                
             }
             Remover();
         }
@@ -170,8 +175,8 @@ namespace BB_Projekt2
                     Tag = "bullet",
                     Height = 20,
                     Width = 5,
-                    Fill = Brushes.WhiteSmoke,
-                    Stroke = Brushes.Black
+                    Fill = Brushes.Yellow,
+                    Stroke = Brushes.OrangeRed
 
                 };
 
@@ -185,7 +190,6 @@ namespace BB_Projekt2
         private void SpawnEnemy(object sender, EventArgs e)
         {
             Enemy enemy = new Enemy(); //Új ellenség létrehozása
-
             Canvas.SetLeft(enemy.Shape, random.Next((int)gameCanvas.ActualWidth - 50)); //Ellenség random pozícióba helyezése a canvason
             Canvas.SetTop(enemy.Shape, 0);
 

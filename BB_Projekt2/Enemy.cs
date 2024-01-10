@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Formats.Asn1;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,6 @@ namespace BB_Projekt2
     {
         Random random = new Random();
         public Rectangle Shape { get; }
-
         public Enemy()
         {
             Shape = new Rectangle
