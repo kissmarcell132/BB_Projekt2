@@ -39,7 +39,7 @@ namespace BB_Projekt2
             InitializeComponent();
 
             
-            timer.Interval = TimeSpan.FromMilliseconds(1); // 20 millisekundumonként frissít
+            timer.Interval = TimeSpan.FromMilliseconds(10); // 10 millisekundumonként frissít
             timer.Tick += LoopForGame; // hozzá adjuk a LoopForGame fügvényt így azt hívja meg folyamatosan
             timer.Start(); // el kell indítani a játékot
 
@@ -58,7 +58,6 @@ namespace BB_Projekt2
             kaplon_Player.Fill = kaplonImage;
 
 
-            InitializeComponent();
 
             enemySpawnTimer.Interval = TimeSpan.FromSeconds(1.25); //Hány másodpercenként spawnoljanak az enemyk
             enemySpawnTimer.Tick += SpawnEnemy;

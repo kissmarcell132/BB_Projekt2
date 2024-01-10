@@ -8,29 +8,29 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="images\1.jpg" />
-    <None Remove="images\2.jpg" />
-    <None Remove="images\3.jpg" />
-    <None Remove="images\4.jpg" />
+    <None Remove="images\1.png" />
+    <None Remove="images\2.png" />
+    <None Remove="images\3.png" />
+    <None Remove="images\4.png" />
     <None Remove="images\5.png" />
     <None Remove="images\background.jpg" />
     <None Remove="images\kaplon.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="images\2.jpg">
+    <Resource Include="images\3.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="images\1.jpg">
+    <Resource Include="images\1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="images\3.jpg">
+    <Resource Include="images\2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="images\4.jpg">
+    <Resource Include="images\4.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="images\5.png">
