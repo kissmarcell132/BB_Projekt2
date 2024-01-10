@@ -44,8 +44,6 @@ namespace BB_Projekt2
         public MainWindow()
         {
             InitializeComponent();
-
-
         }
         
         private void gameStart()
@@ -93,6 +91,10 @@ namespace BB_Projekt2
                     Rect bulletHitbox = new Rect(Canvas.GetLeft(item), Canvas.GetTop(item), item.Width, item.Height);
                     if (Canvas.GetTop(item) < 10)
                         itemsForRemove.Add(item);
+                }
+                if(item is Rectangle && Canvas.GetTop(item) > 500)
+                {
+                    itemsForRemove.Add(item);
                 }
             }
             Remover();
