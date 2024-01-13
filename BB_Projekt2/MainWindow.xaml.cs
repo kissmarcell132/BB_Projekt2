@@ -84,7 +84,7 @@ namespace BB_Projekt2
             kaplonHitbox = new Rect(Canvas.GetLeft(kaplon_Player), Canvas.GetTop(kaplon_Player), kaplon_Player.Width, kaplon_Player.Height);
             MovePlayer();
             CheckCollisionsBeetweenEnemyAndBullet();
-            CheckCollisionsBeetweenEnemyAndPlayer();
+            CheckCollisionsBeetweenEnemyAndPlayer();;
             foreach (var item in gameCanvas.Children.OfType<Rectangle>())
             {
                 if (item is Rectangle && (string)item.Tag == "bullet")
@@ -108,7 +108,7 @@ namespace BB_Projekt2
             switch (difficulty)
             {
                 case 1:
-                    enemySpawnTime = 2.5;
+                    enemySpawnTime = 2; 
                     playerSpeed = 10;
                     fallingSpeed = 15;
                     break;
@@ -132,10 +132,9 @@ namespace BB_Projekt2
         }
         private void gameHardener()
         {
-            enemySpawnTime = enemySpawnTime / 0.95;
-            playerSpeed += 1;
+            playerSpeed += 2;
             if (fallingSpeed > 0.25)
-                fallingSpeed -= 0.25;
+                fallingSpeed = fallingSpeed / 1.25;
         }
         private void Remover()
         {
@@ -230,6 +229,7 @@ namespace BB_Projekt2
             difficultyNumber = 1;
             //gameCanvas.Children.Remove(difficultyChooser);
             difficultyChooser.Visibility = Visibility.Collapsed;
+            countBack();
             gameStart();
 
         }
@@ -239,6 +239,7 @@ namespace BB_Projekt2
             difficultyNumber = 2;
             difficultyChooser.Visibility = Visibility.Collapsed;
             //gameCanvas.Children.Remove(difficultyChooser);
+            countBack();
             gameStart();
         }
 
@@ -247,6 +248,7 @@ namespace BB_Projekt2
             difficultyNumber = 3;
             difficultyChooser.Visibility = Visibility.Collapsed;
             //gameCanvas.Children.Remove(difficultyChooser);
+            countBack();
             gameStart();
 
         }
@@ -257,9 +259,14 @@ namespace BB_Projekt2
             difficultyChooser.Visibility = Visibility.Collapsed;
             //gameCanvas.Children.Remove(difficultyChooser);
             isItNiccs = true;
+            countBack();
             gameStart();
         }
 
+        private void countBack()
+        {
+
+        }
 
         private void CheckCollisionsBeetweenEnemyAndBullet()
         {
@@ -282,10 +289,14 @@ namespace BB_Projekt2
 
                         // Pontszám növelése
                         score += 10;
+                        if (score % 50 == 0)
+                            gameHardener();
                     }
                 }
             }
         }
+
+
 
         private void CheckCollisionsBeetweenEnemyAndPlayer()
         {

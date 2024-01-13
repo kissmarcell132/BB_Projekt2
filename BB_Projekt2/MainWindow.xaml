@@ -80,7 +80,7 @@
             <Label x:Name="endGameLBL" FontSize="18" Foreground="#FF8F2626"  Visibility="Collapsed"/>
         </StackPanel>
 
-        <Button x:Name="startOverBTN" Content="Újra szeretném kezdeni&#x0a;a játékot" Click="StartClick" Margin="115,250,100,195" Visibility="Collapsed">
+        <Button x:Name="startOverBTN" Content="Újra szeretném kezdeni&#x0a;&#x09;a játékot" Click="StartClick" Margin="115,250,100,195" Visibility="Collapsed" VerticalAlignment="Center">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
