@@ -13,8 +13,9 @@
     <None Remove="images\3.png" />
     <None Remove="images\4.png" />
     <None Remove="images\5.png" />
-    <None Remove="images\background.jpg" />
     <None Remove="images\kaplon.png" />
+    <None Remove="images\laci.png" />
+    <None Remove="images\lettuce.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,10 +37,13 @@
     <Resource Include="images\5.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="images\background.jpg">
+    <Resource Include="images\kaplon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="images\kaplon.png">
+    <Resource Include="images\laci.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\lettuce.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

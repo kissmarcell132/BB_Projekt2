@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -22,6 +23,7 @@ namespace BB_Projekt2
     /// </summary>
     public partial class MainWindow : Window
     {
+        bool isItNiccs = false;
         DispatcherTimer timer = new DispatcherTimer(); // Threadinggel érjük el
         bool moveLeft;
         bool moveRight;
@@ -31,7 +33,7 @@ namespace BB_Projekt2
 
         double enemySpawnTime = 0;
         int playerSpeed = 0;
-        int fallingSpeed = 0;
+        double fallingSpeed = 0;
 
         int damage = 0;
         int score = 0;
@@ -58,19 +60,13 @@ namespace BB_Projekt2
             timer.Start(); // el kell indítani a játékot
 
             gameCanvas.Focus();
-            //ImageBrush bg = new ImageBrush();
-
-            //bg.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/background.jpg"));
-            //bg.TileMode = TileMode.FlipXY; // kicsi a kép így többször kell berakni a TileMode pedig a módja hogy hogyan rakja a képet
-            //bg.Viewport = new Rect(0, 0, 0.2, 0.2);
-            //bg.ViewportUnits = BrushMappingMode.RelativeToBoundingBox;
-
-            //gameCanvas.Background = bg;
-
+            
             ImageBrush kaplonImage = new ImageBrush();
-            kaplonImage.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/kaplon.png"));
+            if (!isItNiccs)
+                kaplonImage.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/kaplon.png"));
+            else
+                kaplonImage.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/laci.png"));
             kaplon_Player.Fill = kaplonImage;
-
 
 
             enemySpawnTimer.Interval = TimeSpan.FromSeconds(enemySpawnTime); //Hány másodpercenként spawnoljanak az enemyk
@@ -79,6 +75,10 @@ namespace BB_Projekt2
         }
         private void LoopForGame(object? sender, EventArgs e)
         {
+            if (damage >= 100)
+            {
+                gameEnd();
+            }
             scoreLbl.Content = $"Score: {score}";
             damageLbl.Content = $"Damage: {damage}";
             kaplonHitbox = new Rect(Canvas.GetLeft(kaplon_Player), Canvas.GetTop(kaplon_Player), kaplon_Player.Width, kaplon_Player.Height);
@@ -130,7 +130,13 @@ namespace BB_Projekt2
 
             }
         }
-
+        private void gameHardener()
+        {
+            enemySpawnTime = enemySpawnTime / 0.95;
+            playerSpeed += 1;
+            if (fallingSpeed > 0.25)
+                fallingSpeed -= 0.25;
+        }
         private void Remover()
         {
             foreach (Rectangle rect in itemsForRemove)
@@ -187,7 +193,7 @@ namespace BB_Projekt2
 
         private void SpawnEnemy(object sender, EventArgs e)
         {
-            Enemy enemy = new Enemy(); //Új ellenség létrehozása
+            Enemy enemy = new Enemy(isItNiccs); //Új ellenség létrehozása
             Canvas.SetLeft(enemy.Shape, random.Next((int)gameCanvas.ActualWidth - 50)); //Ellenség random pozícióba helyezése a canvason
             Canvas.SetTop(enemy.Shape, 0);
             enemy.Shape.Tag = "enemy";
@@ -222,7 +228,8 @@ namespace BB_Projekt2
         private void easyBTN_Click(object sender, RoutedEventArgs e)
         {
             difficultyNumber = 1;
-            gameCanvas.Children.Remove(difficultyChooser);
+            //gameCanvas.Children.Remove(difficultyChooser);
+            difficultyChooser.Visibility = Visibility.Collapsed;
             gameStart();
 
         }
@@ -230,14 +237,16 @@ namespace BB_Projekt2
         private void mediumBTN_Click(object sender, RoutedEventArgs e)
         {
             difficultyNumber = 2;
-            gameCanvas.Children.Remove(difficultyChooser);
+            difficultyChooser.Visibility = Visibility.Collapsed;
+            //gameCanvas.Children.Remove(difficultyChooser);
             gameStart();
         }
 
         private void hardBTN_Click(object sender, RoutedEventArgs e)
         {
             difficultyNumber = 3;
-            gameCanvas.Children.Remove(difficultyChooser);
+            difficultyChooser.Visibility = Visibility.Collapsed;
+            //gameCanvas.Children.Remove(difficultyChooser);
             gameStart();
 
         }
@@ -245,7 +254,9 @@ namespace BB_Projekt2
         private void nitsBTN_Click(object sender, RoutedEventArgs e)
         {
             difficultyNumber = 4;
-            gameCanvas.Children.Remove(difficultyChooser);
+            difficultyChooser.Visibility = Visibility.Collapsed;
+            //gameCanvas.Children.Remove(difficultyChooser);
+            isItNiccs = true;
             gameStart();
         }
 
@@ -294,6 +305,41 @@ namespace BB_Projekt2
                     damage += 10;
                 }
             }
+        }
+
+        private void gameEnd()
+        {
+            timer.Stop();
+            enemySpawnTimer.Stop();
+            List<string> messages = new List<string>();
+            if(!isItNiccs)
+            {
+                messages.Add("Úgy néz ki Kaplonon nem csak a nők");
+                messages.Add("hanem a kebabok is ki tudnak fogni");
+                messages.Add($"Kedvenc csontvázunk {score/10} kebabot evett meg");
+            }
+            else
+            {
+                messages.Add("Látod barátocskám a saláta kódok néha");
+                messages.Add("még rajtam is ki tudnak fogni");
+                messages.Add($"Laci mester {score/10} saláta kódót tudott legyözni");
+            }
+            mainGrid.Children.Remove(gameCanvas);
+            label1.Content = messages[0];
+            label2.Content = messages[1];
+            endGameLBL.Content = messages[2];
+            endGameLBL.VerticalAlignment = VerticalAlignment.Center;
+            endGameLBL.Visibility = closeBTN.Visibility = label1.Visibility = label2.Visibility = startOverBTN.Visibility = Visibility.Visible;
+        }
+        private void StartClick(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(System.Diagnostics.Process.GetCurrentProcess().ProcessName);
+            System.Windows.Application.Current.Shutdown();
+        }
+
+        private void StopClick(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

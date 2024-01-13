@@ -7,51 +7,90 @@
         mc:Ignorable="d"
         Title="Kaplon versus Kebabs" Height="600" Width="500" ResizeMode="NoResize">
     <Window.Resources>
-        <SolidColorBrush x:Key="mouseOverColor"
-                    Color="Red" />
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="28"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontFamily" Value="Copperplate Gothic Bold"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Width" Value="270"/>
+            <Setter Property="Height" Value="75"/>
+            <Setter Property="Background" Value="#FF5A1515"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontFamily" Value="Lucida Bright"/>
+            <Setter Property="BorderBrush" Value="#FF8F1C1C"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
     </Window.Resources>
-    <Canvas x:Name="gameCanvas" Focusable="True" KeyDown="gameCanvas_KeyDown" KeyUp="gameCanvas_KeyUp">
-        <Canvas.Background>
+    <Grid x:Name="mainGrid">
+        <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                 <GradientStop Color="Black"/>
                 <GradientStop Color="#FF8F2626" Offset="1"/>
             </LinearGradientBrush>
-        </Canvas.Background>
+        </Grid.Background>
+        <Canvas x:Name="gameCanvas" Focusable="True" KeyDown="gameCanvas_KeyDown" KeyUp="gameCanvas_KeyUp">
 
-        <Grid x:Name="difficultyChooser" Width="400" Height="400" Margin="50, 100, 50, 100" Background="#FF8F2626" OpacityMask="Black" >
-            <Grid.RowDefinitions>
-                <RowDefinition Height="0.45*"/>
-                <RowDefinition Height="0.75*"/>
-                <RowDefinition Height="0.75*"/>
-                <RowDefinition Height="0.75*"/>
-                <RowDefinition Height="0.75*"/>
-            </Grid.RowDefinitions>
-            <Label Content="Choose your difficulty" Grid.Row="0" FontSize="28" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Copperplate Gothic Bold" FontWeight="Bold"/>
-            <Button x:Name="easyBTN" Content="Kaplon teli van" Width="270" Height="75" Grid.Row="1" Click="easyBTN_Click" FontWeight="Bold" FontSize="18" FontFamily="Lucida Bright" BorderBrush="#FF8F1C1C" Background="#FF5A1515">
-                <Button.Effect>
-                    <DropShadowEffect/>
-                </Button.Effect>
-            </Button>
-            <Button x:Name="mediumBTN" Content="Kaplon kezd éhes lenni" Width="270" Height="75" Grid.Row="2" Click="mediumBTN_Click"  Background="#FF5A1515" FontWeight="Bold" FontSize="18" FontFamily="Lucida Bright" BorderBrush="#FF8F1C1C">
-                <Button.Effect>
-                    <DropShadowEffect/>
-                </Button.Effect>
-            </Button>
-            <Button x:Name="hardBTN" Content="Kaplon meg tudna&#x0a;enni egy antilopot" VerticalContentAlignment="Center" Width="270" Height="75" Grid.Row="3" Click="hardBTN_Click"  Background="#FF5A1515" FontWeight="Bold" FontSize="18" FontFamily="Lucida Bright" BorderBrush="#FF8F1C1C">
-                <Button.Effect>
-                    <DropShadowEffect/>
-                </Button.Effect>
-            </Button>
-            <Button x:Name="nitsBTN" Content="Nits Laci level typa shit" Width="270" Height="75" Grid.Row="4" Click="nitsBTN_Click"  Background="#FF5A1515" FontWeight="Bold" FontSize="18" FontFamily="Lucida Bright" BorderBrush="#FF8F1C1C">
-                <Button.Effect>
-                    <DropShadowEffect/>
-                </Button.Effect>
-            </Button>
-        </Grid>
+            <Grid x:Name="difficultyChooser" Width="400" Height="400" Margin="50, 100, 50, 100" Background="#FF8F2626" OpacityMask="Black" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.45*"/>
+                    <RowDefinition Height="0.75*"/>
+                    <RowDefinition Height="0.75*"/>
+                    <RowDefinition Height="0.75*"/>
+                    <RowDefinition Height="0.75*"/>
+                </Grid.RowDefinitions>
+                <Label Content="Choose your difficulty" Grid.Row="0" />
+                <Button x:Name="easyBTN" Content="Kaplon teli van" Grid.Row="1" Click="easyBTN_Click">
+                    <Button.Effect>
+                        <DropShadowEffect/>
+                    </Button.Effect>
+                </Button>
 
-        <Rectangle x:Name="kaplon_Player" Height="70" Width="50" Fill="AliceBlue" Canvas.Left="230" Canvas.Top="485" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden"/>
+                <Button x:Name="mediumBTN" Content="Kaplon kezd éhes lenni" Grid.Row="2" Click="mediumBTN_Click">
+                    <Button.Effect>
+                        <DropShadowEffect/>
+                    </Button.Effect>
+                </Button>
+                <Button x:Name="hardBTN" Content="Kaplon meg tudna&#x0a;enni egy antilopot" Grid.Row="3" Click="hardBTN_Click">
+                    <Button.Effect>
+                        <DropShadowEffect/>
+                    </Button.Effect>
+                </Button>
+                <Button x:Name="nitsBTN" Content="Nits Laci level typa shit" Grid.Row="4" Click="nitsBTN_Click">
+                    <Button.Effect>
+                        <DropShadowEffect/>
+                    </Button.Effect>
+                </Button>
+            </Grid>
 
-        <Label x:Name="scoreLbl" Content="Score: 0" FontSize="20" FontWeight="Bold" Foreground="#FF8F2626" Visibility="Hidden"/>
-        <Label x:Name="damageLbl" Content="Damage: 0" FontSize="20" FontWeight="Bold" Foreground="#FF8F2626" HorizontalAlignment="Left" Canvas.Left="350" VerticalAlignment="Center" Visibility="Hidden"/>
-    </Canvas>
+
+
+
+            <Rectangle x:Name="kaplon_Player" Height="70" Width="50" Fill="AliceBlue" Canvas.Left="230" Canvas.Top="485" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden"/>
+
+            <Label x:Name="scoreLbl" Content="Score: 0" FontSize="20" FontWeight="Bold" Foreground="#FF8F2626" Visibility="Hidden"/>
+            <Label x:Name="damageLbl" Content="Damage: 0" FontSize="20" FontWeight="Bold" Foreground="#FF8F2626" HorizontalAlignment="Left" Canvas.Left="350" VerticalAlignment="Center" Visibility="Hidden"/>
+        </Canvas>
+        <StackPanel Margin="0,100,0,0">
+            <Label x:Name="label1" Content="" FontSize="18" Foreground="#FF8F2626" Visibility="Collapsed"/>
+            <Label x:Name="label2" Content="hanem a kebabok is ki tudnak fogni" FontSize="18" Foreground="#FF8F2626"  Visibility="Collapsed"/>
+            <Label x:Name="endGameLBL" FontSize="18" Foreground="#FF8F2626"  Visibility="Collapsed"/>
+        </StackPanel>
+
+        <Button x:Name="startOverBTN" Content="Újra szeretném kezdeni&#x0a;a játékot" Click="StartClick" Margin="115,250,100,195" Visibility="Collapsed">
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
+
+        <Button x:Name="closeBTN" Content="Ki szeretnék lépni" Click="StopClick" Margin="115, 350,100,85" Visibility="Collapsed">
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
+
+    </Grid>
 </Window>
