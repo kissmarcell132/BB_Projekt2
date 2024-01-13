@@ -5,6 +5,8 @@ using System.Formats.Asn1;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
@@ -14,6 +16,7 @@ namespace BB_Projekt2
     public class Enemy
     {
         Random random = new Random();
+
         public Rectangle Shape { get; }
         public Enemy()
         {
@@ -23,7 +26,9 @@ namespace BB_Projekt2
                 Height = 70,
                 Fill = GetRandomImageBrush(), // Beállítjuk a képet amit random választottunk az enemyknek
             };
+
         }
+
 
         private ImageBrush GetRandomImageBrush()
         {

@@ -45,7 +45,7 @@ namespace BB_Projekt2
         {
             InitializeComponent();
         }
-        
+
         private void gameStart()
         {
             getDifficulty(difficultyNumber);
@@ -83,14 +83,14 @@ namespace BB_Projekt2
             damageLbl.Content = $"Damage: {damage}";
             kaplonHitbox = new Rect(Canvas.GetLeft(kaplon_Player), Canvas.GetTop(kaplon_Player), kaplon_Player.Width, kaplon_Player.Height);
             MovePlayer();
-
+            CheckCollisionsBeetweenEnemyAndBullet();
+            CheckCollisionsBeetweenEnemyAndPlayer();
             foreach (var item in gameCanvas.Children.OfType<Rectangle>())
             {
                 if (item is Rectangle && (string)item.Tag == "bullet")
                 {
                     Canvas.SetTop(item, Canvas.GetTop(item) - 20);
 
-                    Rect bulletHitbox = new Rect(Canvas.GetLeft(item), Canvas.GetTop(item), item.Width, item.Height);
                     if (Canvas.GetTop(item) < 10)
                         itemsForRemove.Add(item);
                 }
@@ -99,8 +99,6 @@ namespace BB_Projekt2
                     damage += 10;
                     itemsForRemove.Add(item);
                 }
-
-                
             }
             Remover();
         }
@@ -148,7 +146,7 @@ namespace BB_Projekt2
                 Canvas.SetLeft(kaplon_Player, Canvas.GetLeft(kaplon_Player) - playerSpeed);
             }
 
-            if (moveRight && Canvas.GetLeft(kaplon_Player) + 69  < 500)
+            if (moveRight && Canvas.GetLeft(kaplon_Player) + 69 < 500)
             {
                 Canvas.SetLeft(kaplon_Player, Canvas.GetLeft(kaplon_Player) + playerSpeed);
             }
@@ -158,7 +156,7 @@ namespace BB_Projekt2
         {
             if (e.Key == Key.Left)
                 moveLeft = true;
-            if(e.Key == Key.Right)
+            if (e.Key == Key.Right)
                 moveRight = true;
         }
 
@@ -192,15 +190,16 @@ namespace BB_Projekt2
             Enemy enemy = new Enemy(); //Új ellenség létrehozása
             Canvas.SetLeft(enemy.Shape, random.Next((int)gameCanvas.ActualWidth - 50)); //Ellenség random pozícióba helyezése a canvason
             Canvas.SetTop(enemy.Shape, 0);
+            enemy.Shape.Tag = "enemy";
 
             gameCanvas.Children.Add(enemy.Shape); //Ellenség hozzáadása a canvashoz
-           
+
             MoveEnemy(enemy); //Ellenség mozgásának animálása
         }
 
         private void MoveEnemy(Enemy enemy)
         {
-            
+
             var storyboard = new System.Windows.Media.Animation.Storyboard(); //Egy storyboard készítése az animáció készítéséhez
 
             // Create a DoubleAnimation to move the enemy vertically
@@ -212,7 +211,7 @@ namespace BB_Projekt2
             };
 
             // Az animációk beállítása és hozzáadása a storyboardhoz
-            System.Windows.Media.Animation.Storyboard.SetTarget(animation, enemy.Shape); 
+            System.Windows.Media.Animation.Storyboard.SetTarget(animation, enemy.Shape);
             System.Windows.Media.Animation.Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.TopProperty));
             storyboard.Children.Add(animation);
 
@@ -248,6 +247,53 @@ namespace BB_Projekt2
             difficultyNumber = 4;
             gameCanvas.Children.Remove(difficultyChooser);
             gameStart();
+        }
+
+
+        private void CheckCollisionsBeetweenEnemyAndBullet()
+        {
+            //Megkeressük és bejárjuk az enemy taggel ellátott objektumokat
+            foreach (var enemy in gameCanvas.Children.OfType<Rectangle>().Where(item => (string)item.Tag == "enemy"))
+            {
+                // enemy Hitbox
+                Rect enemyHitbox = new Rect(Canvas.GetLeft(enemy), Canvas.GetTop(enemy), enemy.Width, enemy.Height);
+                //Megkeressük és bejárjuk a bullet taggel ellátot rectangle-ket
+                foreach (var bullet in gameCanvas.Children.OfType<Rectangle>().Where(item => (string)item.Tag == "bullet"))
+                {   
+                    // Meghatározzuk a lövedék hitboxát
+                    Rect bulletHitbox = new Rect(Canvas.GetLeft(bullet), Canvas.GetTop(bullet), bullet.Width, bullet.Height);
+                    // Ütközés észlelése az IntersectWith függvénnyel, amely megnézi hogy a két objektum összeér e
+                    if (enemyHitbox.IntersectsWith(bulletHitbox))
+                    {
+                        // Objektumok hozzáadása a törlendő listához
+                        itemsForRemove.Add(enemy);
+                        itemsForRemove.Add(bullet);
+
+                        // Pontszám növelése
+                        score += 10;
+                    }
+                }
+            }
+        }
+
+        private void CheckCollisionsBeetweenEnemyAndPlayer()
+        {
+            // Bejárjuk a Canvas gyermekeit amiknek típusa Rectangle illetve enemy taggel vannak ellátva
+            foreach (var enemy in gameCanvas.Children.OfType<Rectangle>().Where(item => (string)item.Tag == "enemy"))
+            {   
+                // Meghatározzuk az enemy Hitboxát
+                Rect enemyHitbox = new Rect(Canvas.GetLeft(enemy), Canvas.GetTop(enemy), enemy.Width, enemy.Height);
+
+                // Ütközés észlelése az IntersectWith függvénnyel, amely megnézi hogy a két objektum összeér e
+                if (enemyHitbox.IntersectsWith(kaplonHitbox))
+                {
+                    // Hozzá adjuk a törlendő listához
+                    itemsForRemove.Add(enemy);
+
+                    // damage növelése
+                    damage += 10;
+                }
+            }
         }
     }
 }
