@@ -46,9 +46,18 @@ namespace BB_Projekt2
         public MainWindow()
         {
             InitializeComponent();
+            PlaySound(@"pack://application:,,,/Sounds/gameStart.mp3");
         }
 
-        private void gameStart()
+        private void PlaySound(string sound)
+        {
+            Uri uri = new Uri(sound);
+            var player = new MediaPlayer();
+            player.Open(uri);
+            player.Play();
+        }
+
+            private void gameStart()
         {
             getDifficulty(difficultyNumber);
             kaplon_Player.Visibility = Visibility.Visible;
