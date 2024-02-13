@@ -279,24 +279,18 @@ namespace BB_Projekt2
 
         private void CheckCollisionsBeetweenEnemyAndBullet()
         {
-            //Megkeressük és bejárjuk az enemy taggel ellátott objektumokat
+            
             foreach (var enemy in gameCanvas.Children.OfType<Rectangle>().Where(item => (string)item.Tag == "enemy"))
             {
-                // enemy Hitbox
                 Rect enemyHitbox = new Rect(Canvas.GetLeft(enemy), Canvas.GetTop(enemy), enemy.Width, enemy.Height);
-                //Megkeressük és bejárjuk a bullet taggel ellátot rectangle-ket
                 foreach (var bullet in gameCanvas.Children.OfType<Rectangle>().Where(item => (string)item.Tag == "bullet"))
                 {   
-                    // Meghatározzuk a lövedék hitboxát
                     Rect bulletHitbox = new Rect(Canvas.GetLeft(bullet), Canvas.GetTop(bullet), bullet.Width, bullet.Height);
-                    // Ütközés észlelése az IntersectWith függvénnyel, amely megnézi hogy a két objektum összeér e
                     if (enemyHitbox.IntersectsWith(bulletHitbox))
                     {
-                        // Objektumok hozzáadása a törlendő listához
                         itemsForRemove.Add(enemy);
                         itemsForRemove.Add(bullet);
 
-                        // Pontszám növelése
                         score += 10;
                         if (score % 50 == 0)
                             gameHardener();
@@ -309,19 +303,14 @@ namespace BB_Projekt2
 
         private void CheckCollisionsBeetweenEnemyAndPlayer()
         {
-            // Bejárjuk a Canvas gyermekeit amiknek típusa Rectangle illetve enemy taggel vannak ellátva
             foreach (var enemy in gameCanvas.Children.OfType<Rectangle>().Where(item => (string)item.Tag == "enemy"))
             {   
-                // Meghatározzuk az enemy Hitboxát
                 Rect enemyHitbox = new Rect(Canvas.GetLeft(enemy), Canvas.GetTop(enemy), enemy.Width, enemy.Height);
 
-                // Ütközés észlelése az IntersectWith függvénnyel, amely megnézi hogy a két objektum összeér e
                 if (enemyHitbox.IntersectsWith(kaplonHitbox))
                 {
-                    // Hozzá adjuk a törlendő listához
                     itemsForRemove.Add(enemy);
 
-                    // damage növelése
                     damage += 10;
                 }
             }
